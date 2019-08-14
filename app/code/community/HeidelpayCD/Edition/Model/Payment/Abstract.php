@@ -9,17 +9,17 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 	 */
 	protected $_code = 'abstract';
 	protected $_order;
+	// protected $version = '14.01.08';
 	protected $_isGateway = true;
 	protected $_canAuthorize = false;
-	protected $_canCapture = false;
-	protected $_canCapturePartial = false;
+	protected $_canCapture = true;
+	protected $_canCapturePartial = true;
 	protected $_canRefund = true;
 	protected $_canRefundInvoicePartial = true;
 	protected $_canVoid = false;
 	protected $_canUseInternal = false;
 	protected $_canUseCheckout = true;
 	protected $_canUseForMultishipping = false;
-	var 	$_canBasketApi = false;
 	protected $_isInitializeNeeded = true;
 	
 	
@@ -33,11 +33,9 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		return true ;
 	} 
 	
-	/*
 	public function	getCode() {
 		return $this->_code ;
 	} 
-	*/
 	
 	protected $_formBlockType = 'hcd/form_desconly';
 	
@@ -154,6 +152,14 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		if (is_numeric($maxamount) && $maxamount > 0 && $maxamount < $amount) return false;
 		return parent::isAvailable($quote);
 		}
+	public function canCapture() {
+		$storeId =  Mage::app()->getStore()->getId();
+		$path = "payment/".$this->_code."/";
+		if (Mage::getStoreConfig($path."bookingmode", $storeId) !=  'PA') {
+			return false;
+		} 
+		return parent::canCapture();
+	}
 	
 	public function getOrderPlaceRedirectUrl()
 		{
@@ -163,10 +169,9 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 	
 	
 	
-	public function getHeidelpayUrl($isRegistration=false, $BasketId=false, $RefId=false)
+	public function getHeidelpayUrl($isRegistration=false)
 		{
-		$config = $frontend = $user = $basketData = array();
-		$criterion = array();	
+		$config = $frontend = $user = $basketData = array();	
 		
 		if ($isRegistration === false) {
 			$order = Mage::getModel('sales/order');
@@ -174,10 +179,8 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 			$order->loadByIncrementId($session->getLastRealOrderId());
 			$ordernr = $order->getRealOrderId();
 		}else {
-			$CustomerId = $this->getCustomerId();
-			$visitorData = Mage::getSingleton('core/session')->getVisitorData();
-			$ordernr = ( $CustomerId == 0) ? $visitorData['visitor_id'] :  $CustomerId;
 			$order = $this->getQuote() ;
+			$ordernr =  $this->getQuote()->getBillingAddress()->getCustomerId();
 		};
 		$this->log("Heidelpay Payment Code : ".$this->_code);
 		$config = $this->getMainConfig($this->_code);
@@ -187,18 +190,14 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		if ($isRegistration === true) $frontend['CRITERION.SHIPPPING_HASH'] =  $this->getShippingHash();
 		$user = $this->getUser($order, $isRegistration);
 		
-		
 		if ($isRegistration === false) {
 			$completeBasket  = ($config['INVOICEING'] == 1 or $this->_code == "hcdbs") ? true : false;
 			$basketData = $this->getBasketData($order, $completeBasket);
 		} else {
 			
 		};
-		if  ($RefId !== false ) $user['IDENTIFICATION.REFERENCEID'] = $RefId ;
-		if  ($BasketId !== false ) $basketData['BASKET.ID'] = $BasketId ;
-		Mage::dispatchEvent('heidelpay_getHeidelpayUrl_bevor_preparePostData', array('order' => $order, 'config' => $config, 'frontend' => $frontend, 'user' => $user, 'basketData' => $basketData, 'criterion' => $criterion ));
 		$params = Mage::helper('hcd/payment')->preparePostData( $config, $frontend,	$user, $basketData,
-			$criterion);
+			$criterion = array());
 		$this->log("doRequest url : ".$config['URL'], 'DEBUG');
 		$this->log("doRequest params : ".print_r($params,1), 'DEBUG');
 		$src = Mage::helper('hcd/payment')->doRequest($config['URL'], $params);
@@ -210,8 +209,8 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 	public function getBasketData($order , $completeBasket = false, $amount=false) {
 		$data = array (
 			'PRESENTATION.AMOUNT' 			=> ($amount) ? $amount : Mage::helper('hcd/payment')->format($order->getGrandTotal()),
-			'PRESENTATION.CURRENCY'			=> $order->getOrderCurrencyCode(),
-			'IDENTIFICATION.TRANSACTIONID'	=> $order->getRealOrderId()
+					'PRESENTATION.CURRENCY'			=> $order->getOrderCurrencyCode(),
+					'IDENTIFICATION.TRANSACTIONID'	=> $order->getRealOrderId()
 		);
 		// Add basket details in case of BillSafe or invoicing over heidelpay
 		$basket = array();
@@ -231,12 +230,11 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 			'FRONTEND.RESPONSE_URL' => 	Mage::getUrl('hcd/index/response', array('_forced_secure' => true, '_store_to_url' => true, '_nosid' => true)),
 			'FRONTEND.SUCCESS_URL' 	=>  Mage::getUrl('hcd/index/success', array('_forced_secure' => true, '_store_to_url' => true, '_nosid' => true)),
 			'FRONTEND.FAILURE_URL' 	=>  Mage::getUrl('hcd/index/error', array('_forced_secure' => true, '_store_to_url' => true, '_nosid' => true)),
-			'CRITERION.PUSH_URL' => 	Mage::getUrl('hcd/index/push', array('_forced_secure' => true, '_store_to_url' => true, '_nosid' => true)),  // PUSH proxy is only used for development purpose
 			'CRITERION.SECRET'		=> 	Mage::getModel('hcd/resource_encryption')->getHash((string)$ordernr),
 			'CRITERION.LANGUAGE'	=>	strtolower(Mage::helper('hcd/payment')->getLang()),
-			'CRITERION.STOREID'			=>	($storeId) ? $storeId : Mage::app()->getStore()->getId(),
+			'CRITERION.STOREID'		=>	($storeId) ? $storeId : Mage::app()->getStore()->getId(),
 			'SHOP.TYPE' 			=> 'Magento '. Mage::getVersion(),
-			'SHOPMODULE.VERSION' 	=> 'HeidelpayCD Edition - '. (string) Mage::getConfig()->getNode()->modules->HeidelpayCD_Edition->version
+    		'SHOPMODULE.VERSION' 	=> 'HeidelpayCD Edition - '. (string) Mage::getConfig()->getNode()->modules->HeidelpayCD_Edition->version
 		);
 	}
 	
@@ -245,15 +243,9 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		$user = array();
 		$billing	= $order->getBillingAddress();
 		$email = ($order->getBillingAddress()->getEmail()) ? $order->getBillingAddress()->getEmail() : $order->getCustomerEmail();
-		$CustomerId = $billing->getCustomerId();
-		$user['CRITERION.GUEST'] = 'false';
-		if ( $CustomerId == 0) {
-			$visitorData = Mage::getSingleton('core/session')->getVisitorData();
-			$CustomerId	= $visitorData['visitor_id']; 
-			$user['CRITERION.GUEST'] = 'true';	
-		}
 		
-		$user['IDENTIFICATION.SHOPPERID'] 	= $CustomerId;
+		
+		$user['IDENTIFICATION.SHOPPERID'] 	= $billing->getCustomerId();
 		if ($billing->getCompany() == true) $user['NAME.COMPANY']	= trim($billing->getCompany());
 		$user['NAME.GIVEN']			= trim($billing->getFirstname());
 		$user['NAME.FAMILY']		= trim($billing->getLastname());
@@ -268,36 +260,32 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		//load reconized data 
 		
 		if ($isReg === false and $order->getPayment()->getMethodInstance()->activRedirct() === true) {
-			
+			if($this->getCustomerData($this->_code, $billing->getCustomerId())) {
+				$paymentData = $this->getCustomerData($this->_code, $billing->getCustomerId());
 				
-				if($this->getCustomerData($this->_code, $billing->getCustomerId())) {
-					$paymentData = $this->getCustomerData($this->_code, $billing->getCustomerId());
+				$this->log('getUser Customer: '. print_r($paymentData,1), 'DEBUG');
+				
+				// remove SHIPPPING_HASH from parameters
+				if (isset($paymentData['payment_data']['SHIPPPING_HASH']))
+					unset($paymentData['payment_data']['SHIPPPING_HASH']);
+				
+				// remove cc or dc reference data
+				if ($this->_code == 'hcdcc' or $this->_code == 'hcddc') {	
+					if (isset($paymentData['payment_data']['ACCOUNT_BRAND']))
+						unset($paymentData['payment_data']['ACCOUNT_BRAND']);
+					if (isset($paymentData['payment_data']['ACCOUNT_NUMBER']))
+						unset($paymentData['payment_data']['ACCOUNT_NUMBER']);
+					if (isset($paymentData['payment_data']['ACCOUNT_HOLDER']))
+						unset($paymentData['payment_data']['ACCOUNT_HOLDER']);
+					if (isset($paymentData['payment_data']['ACCOUNT_EXPIRY_MONTH']))
+						unset($paymentData['payment_data']['ACCOUNT_EXPIRY_MONTH']);
+					if (isset($paymentData['payment_data']['ACCOUNT_EXPIRY_YEAR']))
+						unset($paymentData['payment_data']['ACCOUNT_EXPIRY_YEAR']);
 					
-					$this->log('getUser Customer: '. print_r($paymentData,1), 'DEBUG');
-					
-					
-					
-					// remove SHIPPPING_HASH from parameters
-					if (isset($paymentData['payment_data']['SHIPPPING_HASH']))
-						unset($paymentData['payment_data']['SHIPPPING_HASH']);
-					
-					// remove cc or dc reference data
-					if ($this->_code == 'hcdcc' or $this->_code == 'hcddc') {	
-						if (isset($paymentData['payment_data']['ACCOUNT_BRAND']))
-							unset($paymentData['payment_data']['ACCOUNT_BRAND']);
-						if (isset($paymentData['payment_data']['ACCOUNT_NUMBER']))
-							unset($paymentData['payment_data']['ACCOUNT_NUMBER']);
-						if (isset($paymentData['payment_data']['ACCOUNT_HOLDER']))
-							unset($paymentData['payment_data']['ACCOUNT_HOLDER']);
-						if (isset($paymentData['payment_data']['ACCOUNT_EXPIRY_MONTH']))
-							unset($paymentData['payment_data']['ACCOUNT_EXPIRY_MONTH']);
-						if (isset($paymentData['payment_data']['ACCOUNT_EXPIRY_YEAR']))
-							unset($paymentData['payment_data']['ACCOUNT_EXPIRY_YEAR']);
-						
-					}
-					foreach($paymentData['payment_data'] AS $k => $v )
-					$user[$k] = $v;
 				}
+				foreach($paymentData['payment_data'] AS $k => $v )
+				$user[$k] = $v;
+			}
 			
 		}
 		return $user;	
@@ -424,55 +412,24 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 	}
 	
 	
-	public function canCapture() {
-		
-		//check wether this payment method supports capture
-			
-		if($this->_canCapture === false ) return false ;
-		
-		// prevent frontent to capture an amount in case of direct booking with automatical invoice
-		if (Mage::app()->getStore()->getId() != 0) { 
-			$this->log('try to capture amount in frontend ... this is not necessary !');
-			return false;
-		}	
-		
-		
-		// loading order object to check wether this 
-		$orderIncrementId =  Mage::app()->getRequest()->getParam('order_id');
-		$this->log('$orderIncrementId '.$orderIncrementId);
-		$order = Mage::getModel('sales/order');
-		$order->loadByAttribute('entity_id', (int)$orderIncrementId);	
-				
-		if (Mage::getModel('hcd/transaction')->getOneTransactionByMethode($order->getRealOrderId() , 'PA') === false) {
-			$this->log('there is no preauthorisation for the order '.$order->getRealOrderId());
-			return false;
-		}
-		
-		return true;
-	}
-	
-	
 	public function capture(Varien_Object $payment, $amount)
 		{
-		$criterion=array();
-		
-		$order = $payment->getOrder();
-		$this->log('StoreId'.$order->getStoreId());
-		$Autorisation = array();
+		$this->log('Can capture ? '.($this->canCapture()) ? 'YES': 'NO');
 		if ($this->canCapture()) { 
-				
+			$order = $payment->getOrder();
 			$Autorisation = Mage::getModel('hcd/transaction')->getOneTransactionByMethode($order->getRealOrderId() , 'PA');
 			
-			
-			if ($Autorisation === false) {
-				Mage::throwException(Mage::helper('hcd')->__('This Transaction could not be capture online.')); 	
-				return $this;
-			}
-			
 			$config = $this->getMainConfig($this->_code, $Autorisation['CRITERION_STOREID']);
-			$config['PAYMENT.TYPE']		= 'CP';
+			$config['PAYMENT.TYPE'] = ($this->_code == 'hcdbs') ? 'FI' : 'CP'; // If billsafe set to fin
 			
-			
+			/*
+			if($this->_code == 'hcdbs') {
+				foreach ($Autorisation AS $k => $v){
+					
+				}
+				
+			}
+			*/
 			$frontend = $this->getFrontend($order->getRealOrderId(), $Autorisation['CRITERION_STOREID']);
 			$frontend['FRONTEND.MODE'] 		= 'DEFAULT';
 			$frontend['FRONTEND.ENABLED'] 	= 'false';
@@ -482,11 +439,9 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 			$basketData = $this->getBasketData($order, $basketdetails , $amount);
 			
 			$basketData['IDENTIFICATION.REFERENCEID'] = $Autorisation['IDENTIFICATION_UNIQUEID'];
-			Mage::dispatchEvent('heidelpay_capture_bevor_preparePostData', array('payment' => $payment, 'config' => $config, 'frontend' => $frontend, 'user' => $user, 'basketData' => $basketData, 'criterion' => $criterion ));
+			
 			$params = Mage::helper('hcd/payment')->preparePostData( $config, $frontend,	$user, $basketData,
-				$criterion);
-			
-			
+				$criterion=array());
 			
 			$this->log("doRequest url : ".$config['URL']);
 			$this->log("doRequest params : ".print_r($params,1));
@@ -494,8 +449,7 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 			$src = Mage::helper('hcd/payment')->doRequest($config['URL'], $params);
 			
 			$this->log("doRequest response : ".print_r($src,1));
-			//Mage::throwException('Heidelpay Error: '.'<pre>'.print_r($src,1).'</pre>');
-			
+			Mage::throwException('Heidelpay Error: '.'<pre>'.print_r($src,1).'</pre>');
 			
 			if($src['PROCESSING_RESULT'] == "NOK") {
 				Mage::throwException('Heidelpay Error: '.$src['PROCESSING_RETURN']);
@@ -584,19 +538,11 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		}
 		
 		$this->log('StoreID :'.Mage::app()->getStore()->getId());
-		$CustomerId = $this->getQuote()->getBillingAddress()->getCustomerId();
-		$StoreId = Mage::app()->getStore()->getId();
-		if ( $CustomerId == 0) {
-			$visitorData = Mage::getSingleton('core/session')->getVisitorData();
-			$CustomerId	= $visitorData['visitor_id']; 
-			$StoreId = 0;	
-		}
-		
 		
 		$custumerData->setPaymentmethode($this->_code);
 		$custumerData->setUniqeid($uniqeID);
-		$custumerData->setCustomerid($CustomerId);
-		$custumerData->setStoreid($StoreId);
+		$custumerData->setCustomerid($this->getQuote()->getBillingAddress()->getCustomerId());
+		$custumerData->setStoreid(Mage::app()->getStore()->getId());
 		$data['SHIPPPING_HASH'] =  $this->getShippingHash();
 		$custumerData->setPaymentData(Mage::getModel('hcd/resource_encryption')->encrypt(json_encode($data)));
 		
@@ -609,11 +555,6 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		$PaymentCode = ($code)? $code : $this->_code ;
 		$CustomerId  = ($customerId) ? $customerId : $this->getQuote()->getBillingAddress()->getCustomerId() ;
 		$StoreId	=	($storeId) ? $storeId : Mage::app()->getStore()->getId();
-		if ( $CustomerId == 0) {
-			$visitorData = Mage::getSingleton('core/session')->getVisitorData();
-			$CustomerId	= $visitorData['visitor_id']; 
-			$StoreId = 0;	
-		}
 		
 		$this->log('StoreID :'.Mage::app()->getStore()->getId());	 
 		
@@ -652,10 +593,6 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		
 	}
 	
-	function getCustomerId() {
-		return $this->getQuote()->getBillingAddress()->getCustomerId() ;
-	}
-	
 	public function showPaymentInfo($payment_data) {
 		/* 
 		 * This function should not be modified please overright this function
@@ -664,7 +601,7 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 		 * your function should set $this->getCheckout()->setHcdPaymentInfo($userMessage)
 		 */
 		
-		return false;
+		return;
 	}
 }
 

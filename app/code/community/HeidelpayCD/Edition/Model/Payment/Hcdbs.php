@@ -2,8 +2,15 @@
 class HeidelpayCD_Edition_Model_Payment_Hcdbs extends HeidelpayCD_Edition_Model_Payment_Abstract
 {  
 	protected $_code = 'hcdbs';
+	protected $_isGateway = true;
+	protected $_canAuthorize = false;
 	protected $_canRefund = false;
 	protected $_canRefundInvoicePartial = false;
+	protected $_canVoid = false;
+	protected $_canUseInternal = false;
+	protected $_canUseCheckout = true;
+	protected $_canUseForMultishipping = false;
+	protected $_isInitializeNeeded = false;
 
 	
 	public function isAvailable($quote=null) {
@@ -39,8 +46,9 @@ class HeidelpayCD_Edition_Model_Payment_Hcdbs extends HeidelpayCD_Edition_Model_
 				
 		$load_snippet= strtr( $load_snippet , $repl);
 				
-			
-		return  $load_snippet;
+		$this->getCheckout()->setHcdPaymentInfo($load_snippet);
+		
+		return ;
 		
 	}
 }	

@@ -7,8 +7,6 @@ class HeidelpayCD_Edition_Model_Payment_Hcddc extends HeidelpayCD_Edition_Model_
 	* @var string [a-z0-9_]   
 	**/
 	protected $_code = 'hcddc';
-	protected $_canCapture = true;
-	protected $_canCapturePartial = true;
 	
 	public function isRecognation() {
 		$path = "payment/".$this->_code."/";

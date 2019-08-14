@@ -7,8 +7,6 @@ class HeidelpayCD_Edition_Model_Payment_Hcdeps extends HeidelpayCD_Edition_Model
 	* @var string [a-z0-9_]   
 	**/
 	protected $_code = 'hcdeps';
-	protected $_canRefund = false;
-	protected $_canRefundInvoicePartial = false;
 	
 	protected $_formBlockType = 'hcd/form_eps';
 	
