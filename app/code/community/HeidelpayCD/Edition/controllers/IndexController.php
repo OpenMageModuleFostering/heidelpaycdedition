@@ -320,6 +320,8 @@ class HeidelpayCD_Edition_IndexController extends Mage_Core_Controller_Front_Act
 		$data['FRONTEND_SUCCESS_URL']			= $Request->getPOST('FRONTEND_SUCCESS_URL');
 		$data['FRONTEND_FAILURE_URL']			= $Request->getPOST('FRONTEND_FAILURE_URL');
 		$data['IDENTIFICATION_SHORTID'] 		= $Request->getPOST('IDENTIFICATION_SHORTID');
+		$data['IDENTIFICATION_SHOPPERID'] 		= $Request->getPOST('IDENTIFICATION_SHOPPERID');
+		$data['CRITERION_GUEST'] 		= $Request->getPOST('CRITERION_GUEST');
 		
 		$PaymentCode = Mage::helper('hcd/payment')->splitPaymentCode ($data['PAYMENT_CODE']);
 		
@@ -333,10 +335,11 @@ class HeidelpayCD_Edition_IndexController extends Mage_Core_Controller_Front_Act
 				// save cc and dc registration data
 				$custumerData = Mage::getModel('hcd/customer');
 				$currentPaymnet = 'hcd'.strtolower($PaymentCode[0]);
+				$Storeid = ($data['CRITERION_GUEST']  == 'true') ? 0 :  trim($data['CRITERION_STOREID']);
 				$RgData = Mage::getModel('hcd/customer')			
 						->getCollection()
 								->addFieldToFilter('Customerid', trim($data['IDENTIFICATION_SHOPPERID']))
-								->addFieldToFilter('Storeid', trim($data['CRITERION_STOREID']))
+								->addFieldToFilter('Storeid', $Storeid)
 								->addFieldToFilter('Paymentmethode', trim($currentPaymnet));
 				$RgData->load();
 				$returnData = $RgData->getData();
@@ -345,7 +348,7 @@ class HeidelpayCD_Edition_IndexController extends Mage_Core_Controller_Front_Act
 				$custumerData->setPaymentmethode($currentPaymnet);
 				$custumerData->setUniqeid($data['IDENTIFICATION_UNIQUEID']);
 				$custumerData->setCustomerid($data['IDENTIFICATION_SHOPPERID']);
-				$custumerData->setStoreid($data['CRITERION_STOREID']);
+				$custumerData->setStoreid($Storeid);
 				$custumerData->setPaymentData(
 								Mage::getModel('hcd/resource_encryption')
 									->encrypt(json_encode(
