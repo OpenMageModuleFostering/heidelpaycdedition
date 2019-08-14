@@ -78,13 +78,17 @@ class HeidelpayCD_Edition_Model_Transaction extends Mage_Core_Model_Abstract
 				
 				
 			$data = $trans->getData();
-			return  json_decode(Mage::getModel('hcd/resource_encryption')->decrypt($data[0]['jsonresponse']),true);
-			    
+			if (isset($data[0])){ 
+				return  json_decode(Mage::getModel('hcd/resource_encryption')->decrypt($data[0]['jsonresponse']),true);
+			} else {
+			
+				return false;
+			}    
        }
        
        public function getOneTransactionByMethode($transid , $methode) {
        	
-       		$data = array();
+       		$data = false;
        		$trans = $this->getCollection();
        		$trans->addFieldToFilter('transactionid',$transid)
        			  ->addFieldToFilter('Payment_Type', $methode );;
@@ -94,7 +98,13 @@ class HeidelpayCD_Edition_Model_Transaction extends Mage_Core_Model_Abstract
 				
 				
 			$data = $trans->getData();
-			return  json_decode(Mage::getModel('hcd/resource_encryption')->decrypt($data[0]['jsonresponse']),true);
+			
+			if (isset($data[0])){ 
+				return  json_decode(Mage::getModel('hcd/resource_encryption')->decrypt($data[0]['jsonresponse']),true);
+			} else {
+			
+				return false;
+			}
 			    
        }
         

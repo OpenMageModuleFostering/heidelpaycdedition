@@ -19,9 +19,8 @@ class HeidelpayCD_Edition_Model_Payment_Hcdpp extends HeidelpayCD_Edition_Model_
 				
 		$load_snippet= strtr( $load_snippet , $repl);
 				
-		$this->getCheckout()->setHcdPaymentInfo($load_snippet);
+		return $load_snippet;
 		
-		return ;
 		
 	}
 

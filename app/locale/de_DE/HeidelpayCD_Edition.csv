@@ -11,7 +11,7 @@
 "payment informations","Zahlungsinformationen - "
 "Automatically invoiced by Heidelpay.","Automatische Rechnungserstellung durch Heidelpay."
 "Automatically invoiced","Automatische Rechnungserstellung und Versand"
-"Bookinnmode","Buchungsmodus"
+"Bookingmode","Buchungsmodus"
 "Recognition","Wiederkennung"
 "Sort order","Reihenfolge"
 "Minimum Amount (CENT)","Minimal Betrag in Cent"
@@ -34,13 +34,20 @@
 			und die Gl&auml;ubiger ID: {CreditorId}</i><br />
 			<br />
 			Bitte sorgen Sie f&uuml;r ausreichende Deckung auf dem entsprechenden Konto."
-"An unexpected error occurred. Please contact us to get further information.","Es ist ein Fehler aufgetrehten. Bitte kontaktieren Sie uns f&uumlr weitere Informationen."
+"Invoice Info Text","Bitte &uuml;berweisen Sie uns den Betrag von <strong>{AMOUNT} {CURRENCY}</strong> auf folgendes Konto:<br/><br/>
+		Kontoinhaber: {CONNECTOR_ACCOUNT_HOLDER}<br/>
+		IBAN: {CONNECTOR_ACCOUNT_IBAN}<br/>
+		BIC: {CONNECTOR_ACCOUNT_BIC}<br/><br/>
+		<i>Geben Sie als Verwendungszweck bitte ausschlie&szlig;lich diese Identifikationsnummer an:</i><br/>
+		<strong>{IDENTIFICATION_SHORTID}</strong>"
+"An unexpected error occurred. Please contact us to get further information.","Es ist ein Fehler aufgetreten. Bitte kontaktieren Sie uns f&uumlr weitere Informationen."
 "continue","Weiter"
 "Please enter additional payment information.","Geben Sie weitere Zahlungsinformationen ein."
 "recived amount ","eingegangener Betrag "
 "Push information from Heidelpay","Push Information von Heidelpay"
 "Direct Booking","Sofortbuchung"
 "Preauthorisation","Reservierung"
+"Expires","Ablaufdatum:"
 
 "Credit Card","Kreditkarte"
 "Debit Card","Debitkarte"
@@ -55,6 +62,14 @@
 "Invoice","Rechnung"
 "Mangirkart","MangirKart"
 "BillSafe","Kauf auf Rechnung"
+"MasterPass","MasterPass"
+"MASTER","MasterCard"
+"VISA","Visa"
+"AMEX","American Express"
+"MAESTRO","Maestro"
+"DISCOVER","Discover"		
+"DINERS","Diners Club"
+
 
 "Deschcdcc","Sicher zahlen mit Kreditkarte"
 "Deschcddc","Sicher zahlen mit Debitkarte"
@@ -69,6 +84,8 @@
 "Deschcdiv","Sicher zahlen mit Rechnung"
 "Deschcdmk","Sicher zahlen mit MangirKart"
 "Deschcdbs","Kaufen Sie jetzt auf Rechnung und begutachten Sie Ihre Eink&auml;ufe in Ruhe bevor Sie bezahlen. <br/><a title='Ihre Vorteile' href='http://www.billsafe.de/special/payment-info' target='_blank'><img src='https://images.billsafe.de/image/image/id/191997712fbe' style='border:0'/></a>"
+"Deschcdyt","Sicher zahlen mit Yapital"
+"Deschcdmpa","MasterPass ist eine digitale Bezahll&ouml;sung f&uuml;r den Einkauf im Internet von MasterCard, die von Banken und MasterCard direkt bereitgestellt wird. Ihre Kartendaten und Lieferadressen werden an einem gesch&uuml;tzten Ort aufbewahrt. Nachdem Sie sich registriert haben, k&ouml;nnen Sie mit wenigen Klicks sicher online einkaufen."
 
 "Return in Errorcase","R&uuml;ckleitung bei Bezahlfehler"
 "Please configurate where your costumer should be redirected to in case of an payment error","Hier k&ouml;nnen Sie einstellen, wo der Kunde in Fehlerfall hingeleitet werden soll."
@@ -84,6 +101,7 @@
 "Invoicing over heidelpay requires an extra contract. For more information, please contact your key account manager.","F&uuml;r Heidelpay Rechnungsversand ben&ouml;tigen Sie einen extra Vertag. Kontaktieren Sie Ihren Vertriebsansprechpartner f&uuml;r ein Angebot."
 "General Settings Heidelpay","Heidelpay Einstellungen"
 "about Heidelpay","&Uuml;ber Heidelpay"
+"about MasterPass","&uuml;ber MasterPass"
 
 "Heidelpay Credit Card (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Kreditkarte"
 "Heidelpay Direct Debit (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Lastschrift"
@@ -98,6 +116,8 @@
 "Heidelpay Billsafe (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition BillSafe"
 "Heidelpay EPS (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition EPS"
 "Heidelpay iDeal (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition iDeal"
+"Heidelpay Yapital (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Yapital"
+"Heidelpay MasterPass (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition MasterPass"
 
 "No.","Nr."
 "Valid until:","G&uuml;ltig bis:"
@@ -108,6 +128,7 @@
 "IBAN","IBAN"
 "BIC","BIC"
 "Owner","Inhaber"
+"Change at MasterPass","&Auml;ndern bei MasterPass"
 "Please enter account no.","Bitte Konto angeben."
 "Please enter bankcode.","Bitte BLZ angeben."
 "Please enter owner.","Bitte Inhaber angeben."
@@ -129,6 +150,14 @@
 "IBAN & BIC","IBAN & BIC"
 
 "Canceled by user","Bezahlprozess vom Benutzer abgebrochen."
+"Redirect to MasterPass ...","Weiterleitung zu MasterPass ..."
+"This Transaction could not be capture online.","Diese Transaction kann nicht online erfasst werden."
+"please note that this is only necessary, when you use purchase on account with payment guarantee.","Diese Einstellung ist nur Notwendig, wenn Sie bereits Rechnungskauf mit Zahlungssicherheit verwenden."
+"please note that capture on delivery is only possible, when you set bookingmode to preauthorisation","Diese Einstellung ist nur m&ouml;glich, wenn der Buchungsmodus auf Reservierung steht."
+"Automatically capture on delivery","Automatische Erfassung bei Versand"
+"Send delivery note to Heidelpay","Versandmeldung an Heidelpay"
+"Successfully report delivery to Heidelpay.","Lieferung erfolgreich an Heidelpay gemeldet."
+"Delivery notes to Heidelpay fail, because of : ","Versandmeldung an Heidelpay ist fehlgeschalgen. "
 
 "You have used the card %CARD% befor, would you like to use this again?","Sie haben beim letzten Einkauf die Karte %CARD% verwendet, wollen Sie diese erneut benutzen?"
 "HPError-100.100.101","Bitte &uuml;berpr&uuml;fen Sie Ihre Eingaben"

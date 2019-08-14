@@ -105,6 +105,18 @@ Heidelpay.toggle = Class.create({
 		$$("." + actPayment +"_ACCOUNT_NUMBER")[0].value = replace;
 		$$("." + actPayment + "_ACCOUNT_VERIFICATION")[0].value = replace;
 
+	},
+	button: function (url) {
+		
+
+		$$('.btn-hcdmpa').each(Element.toggle);
+		
+		$$(".btn-checkout").each(Element.toggle);
+
+		$$(".masterpass-please-wait").each(Element.toggle);
+		
+		window.location.href = url ;
+		
 	}
 });
 

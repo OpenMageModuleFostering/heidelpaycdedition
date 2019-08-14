@@ -2,6 +2,8 @@
 class HeidelpayCD_Edition_Model_Payment_Hcddd extends HeidelpayCD_Edition_Model_Payment_Abstract
 {
 	protected $_code = 'hcddd';
+	protected $_canCapture = true;
+	protected $_canCapturePartial = true;
 	// protected $_infoBlockType = 'hcd/info_debit';
 	protected $_formBlockType = 'hcd/form_debit';
 	
@@ -63,9 +65,8 @@ class HeidelpayCD_Edition_Model_Payment_Hcddd extends HeidelpayCD_Edition_Model_
 				
 		$load_snippet= strtr( $load_snippet , $repl);
 				
-		$this->getCheckout()->setHcdPaymentInfo($load_snippet);
 		
-		return;
+		return $load_snippet;
 		
 	}
 	

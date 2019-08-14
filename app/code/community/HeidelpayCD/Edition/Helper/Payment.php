@@ -4,6 +4,7 @@
 class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 {
 	protected $_invoiceOrderEmail = true ;
+	protected $_debug 			  = false ;
 	
 	protected function _getHelper()
 		{
@@ -20,18 +21,34 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 		$client = new Zend_Http_Client(trim($url), array(
 			
 		));
+		
+		if (array_key_exists('raw', $params)) {
+			$client->setRawData(json_encode($params['raw']), 'application/json');	
+		} else {
 		$client->setParameterPost($params);
+				}
 		if (extension_loaded('curl')) {
 			$adapter = new Zend_Http_Client_Adapter_Curl();
 			$adapter->setCurlOption(CURLOPT_SSL_VERIFYPEER, true);
 			$adapter->setCurlOption(CURLOPT_SSL_VERIFYHOST, 2);
 			$client->setAdapter($adapter);
 		}
-		$respone = $client->request('POST');
-		$res = $respone->getBody();
+		$response = $client->request('POST');
+		$res = $response->getBody();
+		
+		
+		if ($response->isError()) {
+			
+			$this->log("Request fail. Http code : ".$response->getStatus().' Message : '.$res,'ERROR');
+			$this->log("Request data : ".print_r($params,1),'ERROR');
+			if (array_key_exists('raw', $params)) return $response;
+		}
+		
+		if (array_key_exists('raw', $params)) return json_decode($res,true); 
 		
 		$result = null;
 		parse_str($res, $result);
+		
 		return $result;
 		}
 	
@@ -60,7 +77,6 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 		}	
 		$params['TRANSACTION.CHANNEL']	= $config['TRANSACTION.CHANNEL'];
 		
-		//$config['PAYMENT.TYPE'] = (array_key_exists('PAYMENT.TYPE',$config)) ? $config['PAYMENT.TYPE'] : 'DB' ;
 		
 		/* Set payment methode */
 		switch ($config['PAYMENT.METHOD']) {
@@ -79,6 +95,13 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 			case 'pf':
 				$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'PA' : $config['PAYMENT.TYPE'] ;
 				$params['PAYMENT.CODE'] = "OT.".$type ;
+				break;
+				/* yapital */
+			case 'yt':
+				$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'PA' : $config['PAYMENT.TYPE'];
+				$params['PAYMENT.CODE'] = "OT.".$type;
+				$params['ACCOUNT.BRAND'] 			= "YAPITAL";
+				$params['FRONTEND.ENABLED'] 	= "false";
 				break;
 				/* paypal */
 			case 'pal';
@@ -101,29 +124,45 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 				$params['PAYMENT.CODE'] = "IV.".$type ;
 				break;
 				/* BillSafe */
-			case 'bs' ;
+			case 'bs' :
 			$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'PA' : $config['PAYMENT.TYPE'] ;
 			$params['PAYMENT.CODE'] = "IV.".$type ;
 			$params['ACCOUNT.BRAND']	= "BILLSAFE";
 			$params['FRONTEND.ENABLED']			=	"false";
 			break;
 			/* BarPay */
-			case 'bp' ;
+			case 'bp' :
 			$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'PA' : $config['PAYMENT.TYPE'] ;
 			$params['PAYMENT.CODE'] = "PP.".$type ; 
 			$params['ACCOUNT.BRAND'] = "BARPAY";
 			$params['FRONTEND.ENABLED']			=	"false";
 			break;
 			/* MangirKart */
-			case 'mk' ;
+			case 'mk' :
 			$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'PA' : $config['PAYMENT.TYPE'] ;
 			$params['PAYMENT.CODE'] = "PC.".$type ;
 			$params['ACCOUNT.BRAND'] = "MANGIRKART";
 			$params['FRONTEND.ENABLED']			=	"false";
 			break;
+			/* MasterPass */
+			case 'mpa' :
+			$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'DB' : $config['PAYMENT.TYPE'] ;
+			
+			// masterpass as a payment methode
+			if (!array_key_exists('IDENTIFICATION.REFERENCEID',$userData) and( $type == 'DB' or $type == 'PA')) {
+						$params['WALLET.DIRECT_PAYMENT'] = "true";
+						$params['WALLET.DIRECT_PAYMENT_CODE'] = "WT.".$type ;
+						$type = 'IN';
+						
+			}
+			
+			$params['PAYMENT.CODE'] 	= "WT.".$type ;
+			$params['ACCOUNT.BRAND'] 	= "MASTERPASS";
+			break;
 			/* default */		 			 		
 			default:
-				$params['PAYMENT.CODE'] = strtoupper($config['PAYMENT.METHOD']).'.'.$config['PAYMENT.TYPE']; 
+				$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'PA' : $config['PAYMENT.TYPE'];
+				$params['PAYMENT.CODE'] = strtoupper($config['PAYMENT.METHOD']).'.'.$type;  
 			break;
 		}
 		
@@ -172,7 +211,7 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 	
 	
 	public function mapStatus ($data ,$order, $message=false) {
-		
+		$this->log('mapStatus'.print_r($data,1));
 		$PaymentCode = $this->splitPaymentCode($data['PAYMENT_CODE']);
 		$totalypaid = false ;
 		$invoiceMailComment = '';
@@ -229,11 +268,15 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 					$message );
 			}
 			
-			$path = "payment/".$order->getPayment()->getMethodInstance()->getCode()."/";
+			$this->log('$totalypaid '.$totalypaid);
+			
+			$code = $order->getPayment()->getMethodInstance()->getCode();
+			
+			$path = "payment/".$code."/";
 			
 			$this->log($path.' Auto invoiced :'.Mage::getStoreConfig($path."invioce", $data['CRITERION_STOREID']).$data['CRITERION_STOREID']);
 			
-			if ($order->canInvoice() and Mage::getStoreConfig($path."invioce", $data['CRITERION_STOREID']) == 1 and $totalypaid === true ) {
+			if ($order->canInvoice() and (Mage::getStoreConfig($path."invioce", $data['CRITERION_STOREID']) == 1 or $code == 'hcdbs') and $totalypaid === true ) {
 				$this->log('Can Invoice ? '.($order->canInvoice()) ? 'YES': 'NO');
 				$invoice = $order->prepareInvoice();
 				$invoice->register()->capture();
@@ -245,8 +288,15 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 					Mage::helper('hcd')->__('Automatically invoiced by Heidelpay.'),
 					false
 				);
-				if ($this->_invoiceOrderEmail) $invoice->sendEmail(true, $invoiceMailComment); // Rechnung versenden
 				$invoice->save();
+				if ($this->_invoiceOrderEmail) {
+							if ($code != 'hcdpp' and $code != 'hcdiv') {
+									$info = $order->getPayment()->getMethodInstance()->showPaymentInfo($data);
+									$invoiceMailComment = ($info === false) ? '' : '<h3>'.$this->__('Payment Information').'</h3>'.$info.'<br/>'; 
+							}
+							$invoice->sendEmail(true, $invoiceMailComment); // Rechnung versenden
+				}
+				
 				
 				
 				$transactionSave = Mage::getModel('core/resource_transaction')
@@ -281,6 +331,7 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 				);	
 			}
 		}
+		Mage::dispatchEvent('heidelpay_after_map_status', array('order' => $order));
 		$order->save();
 		
 	}
@@ -309,8 +360,7 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 	 */
 	public function handleError($errorMsg, $errorCode=null, $ordernr=null)  {
 		// default is return generic error message
-		
-		$this->log('Ordernumber '.$ordernr.' -> '.$errorMsg.' ['.$errorCode.']','NOTICE');
+		if ( $ordernr != null)	$this->log('Ordernumber '.$ordernr.' -> '.$errorMsg.' ['.$errorCode.']','NOTICE');
 		
 		if ($errorCode) {
 			if (!preg_match('/HPError-[0-9]{3}\.[0-9]{3}\.[0-9]{3}/', $this->_getHelper()->__('HPError-'.$errorCode), $matches)) //JUST return when snipet exists
@@ -366,5 +416,88 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 		Mage::log($message, $lev, $file);		
 		return true;
 	}
+	
+	public function basketItems ($quote, $storeId) {
+	
+	
+		$ShoppingCartItems = $quote->getAllVisibleItems();
+	
+		$ShoppingCart = array(); 
+		
+		
+		        $ShoppingCart = array(
+        
+        		'authentication' => array(
+        		
+        						'login'		=> trim(Mage::getStoreConfig('hcd/settings/user_id', $storeId)),
+        						'sender' 	=> trim(Mage::getStoreConfig('hcd/settings/security_sender', $storeId)),
+        						'password' 	=> trim(Mage::getStoreConfig('hcd/settings/user_pwd', $storeId)),
+        		
+        					),
+        
+        
+        		'basket' =>  array (
+        					'amountTotalNet' 		=> floor(bcmul($quote->getGrandTotal(),100,10)),
+        					'currencyCode'			=> $quote->getGlobalCurrencyCode(),
+        					'amountTotalDiscount'	=> floor(bcmul($quote->getDiscountAmount(),100,10)),
+        					'itemCount'				=> count($ShoppingCartItems) 
+        					)
+        
+        
+        
+        );
+        
+        $count=1;
+        
+        foreach ($ShoppingCartItems as $item) {
+        	
+        	if($this->_debug === true) echo 'Item: '.$count.'<br/><pre>'.print_r($item,1).'</pre>';
+        	
+        	$ShoppingCart['basket']['basketItems'][] = array(
+            										'position' 				=> $count,
+            										'basketItemReferenceId' => $item->getItemId(),
+            										'unit'					=> 'Stk.',
+            										'quantity'				=> ($item->getQtyOrdered()  !== false ) ? floor($item->getQtyOrdered()) : $item->getQty() ,
+            										'vat'					=> floor($item->getTaxPercent()),
+            										'amountVat'				=> floor(bcmul($item->getTaxAmount(),100,10)),
+            										'amountGross'			=> floor(bcmul($item->getRowTotalInclTax(),100,10)),
+            										'amountNet'				=> floor(bcmul($item->getRowTotal(),100,10)), 
+            										'amountPerUnit'			=> floor(bcmul($item->getPrice(),100,10)),
+            										'amountDiscount'		=> floor(bcmul($item->getDiscountAmount(),100,10)),
+            										'type'					=> 'goods',
+            										'title'					=> $item->getName(),
+            										'imageUrl'				=> (string)Mage::helper('catalog/image')->init($item->getProduct(), 'thumbnail')
+            
+            );
+            $count++;
+        }
+        
+        if($this->_debug === true) {
+        		echo '<pre>'.print_r($ShoppingCart,1).'</pre>';
+        		exit();
+        }
+		return $ShoppingCart;
+		
+	}
+	
+	public function getRegion($countryCode, $stateByName) {
+		//$regionData = Mage::getModel ( 'directory/region_api' )->items ( $countryCode );
+		$regionData = Mage::getModel('directory/region')->getResourceCollection()
+                ->addCountryFilter($countryCode)
+                ->load();
+                
+        //$this->log(print_r($regionData,1));
+		
+		$regionId = null;
+		
+		foreach ( $regionData as $region ) {
+			if (strtolower($stateByName) == strtolower($region ['name']) or $stateByName == $region ['code']) {
+				return $region['region_id'];
+			}
+		}
+		// Return last region if mapping fails
+		return $region['region_id'] ;
+	}
+	
 }
 ?>

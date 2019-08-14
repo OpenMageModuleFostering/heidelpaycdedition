@@ -7,6 +7,8 @@ class HeidelpayCD_Edition_Model_Payment_Hcdpal extends HeidelpayCD_Edition_Model
 	* @var string [a-z0-9_]   
 	**/
 	protected $_code = 'hcdpal';
+	protected $_canCapture = true;
+	protected $_canCapturePartial = true;
 	
 	
 	/*
