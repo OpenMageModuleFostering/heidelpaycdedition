@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/HeidelpayCDEdition",
+    "type": "magento-module",
+    "license": "GPL",
+    "homepage": "",
+    "description": "Heidelpay CD-Edition Payment Plugin",
+    "authors": [
+    {
+        "name": "Heidelberger Payment GmbH",
+        "email": "magento@heidelpay.de"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
