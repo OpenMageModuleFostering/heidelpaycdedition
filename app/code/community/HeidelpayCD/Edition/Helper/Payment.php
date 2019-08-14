@@ -80,13 +80,6 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 				$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'PA' : $config['PAYMENT.TYPE'] ;
 				$params['PAYMENT.CODE'] = "OT.".$type ;
 				break;
-				/* yapital */
-			case 'yt':
-				$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'PA' : $config['PAYMENT.TYPE'];
-				$params['PAYMENT.CODE'] = "OT.".$type;
-				$params['ACCOUNT.BRAND'] 			= "YAPITAL";
-				$params['FRONTEND.ENABLED'] 	= "false";
-				break;
 				/* paypal */
 			case 'pal';
 			$type = (!array_key_exists('PAYMENT.TYPE',$config)) ? 'DB' : $config['PAYMENT.TYPE'] ;
@@ -252,9 +245,8 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 					Mage::helper('hcd')->__('Automatically invoiced by Heidelpay.'),
 					false
 				);
-				$invoice->save();
 				if ($this->_invoiceOrderEmail) $invoice->sendEmail(true, $invoiceMailComment); // Rechnung versenden
-				
+				$invoice->save();
 				
 				
 				$transactionSave = Mage::getModel('core/resource_transaction')
