@@ -4,11 +4,12 @@
 "Card number","Kartennr."
 "Card holder","Karteninhaber"
 "Card expiry","Ablaufdatum"
+"day","Tag"
 "month","Monat"
 "year","Jahr"
 "Verification number","Pr&uuml;fnummer"
 "pay now","Jetzt Bezahlen"
-"payment informations","Zahlungsinformationen - "
+"payment information","Zahlungsinformationen"
 "Automatically invoiced by Heidelpay.","Automatische Rechnungserstellung durch Heidelpay."
 "Automatically invoiced","Automatische Rechnungserstellung und Versand"
 "Bookingmode","Buchungsmodus"
@@ -23,18 +24,16 @@
 "only if shippping adress is unchanged","nur bei gleichbleibender Lieferaddresse"
 "Prepayment Info Text","Bitte &uuml;berweisen Sie uns den Betrag von <strong>{AMOUNT} {CURRENCY}</strong> auf folgendes Konto:<br/><br/>
 		Kontoinhaber: {CONNECTOR_ACCOUNT_HOLDER}<br/>
-		IBAN: {CONNECTOR_ACCOUNT_IBAN}<br/>
-		BIC: {CONNECTOR_ACCOUNT_BIC}<br/><br/>
+		IBAN: {CONNECTOR_ACCOUNT_IBAN}<br/><br/>
 		<i>Geben Sie als Verwendungszweck bitte ausschlie&szlig;lich diese Identifikationsnummer an:</i><br/>
 		<strong>{IDENTIFICATION_SHORTID}</strong>"
 "Direct Debit Info Text","Der Betrag von <strong>{AMOUNT} {CURRENCY}</strong> wird in den n&auml;chsten Tagen von folgendem Konto abgebucht:<br /><br />
-			IBAN: {Iban}<br />
-			BIC: {Bic}<br /><br />
+			IBAN: {Iban}<br /><br/>
 			<i>Die Abbuchung enth&auml;lt die Mandatsreferenz-ID: {Ident}<br />
 			und die Gl&auml;ubiger ID: {CreditorId}</i><br />
 			<br />
 			Bitte sorgen Sie f&uuml;r ausreichende Deckung auf dem entsprechenden Konto."
-"Invoice Info Text","Bitte &uuml;berweisen Sie uns den Betrag von <strong>{AMOUNT} {CURRENCY}</strong> auf folgendes Konto:<br/><br/>
+"Invoice Info Text","Bitte &uuml;berweisen Sie uns den Betrag von <strong>{AMOUNT} {CURRENCY}</strong> nach erhalt der Ware auf folgendes Konto:<br/><br/>
 		Kontoinhaber: {CONNECTOR_ACCOUNT_HOLDER}<br/>
 		IBAN: {CONNECTOR_ACCOUNT_IBAN}<br/>
 		BIC: {CONNECTOR_ACCOUNT_BIC}<br/><br/>
@@ -60,7 +59,6 @@
 "iDeal","iDeal"
 "Prepayment","Vorkasse"
 "Invoice","Rechnung"
-"Mangirkart","MangirKart"
 "BillSafe","Kauf auf Rechnung"
 "MasterPass","MasterPass"
 "MASTER","MasterCard"
@@ -81,11 +79,10 @@
 "Deschcdpp","Sicher zahlen mit Vorkasse"
 "Deschcdpf","Sicher zahlen mit Postfinance"
 "Deschcdsu","Sicher zahlen mit Sofort&uuml;berweisung"
-"Deschcdiv","Sicher zahlen mit Rechnung"
-"Deschcdmk","Sicher zahlen mit MangirKart"
-"Deschcdbs","Kaufen Sie jetzt auf Rechnung und begutachten Sie Ihre Eink&auml;ufe in Ruhe bevor Sie bezahlen. <br/><a title='Ihre Vorteile' href='http://www.billsafe.de/special/payment-info' target='_blank'><img src='https://images.billsafe.de/image/image/id/191997712fbe' style='border:0'/></a>"
-"Deschcdyt","Sicher zahlen mit Yapital"
+"Deschcdiv","Sicher bezahlen per Rechnungskauf"
 "Deschcdmpa","MasterPass ist eine digitale Bezahll&ouml;sung f&uuml;r den Einkauf im Internet von MasterCard, die von Banken und MasterCard direkt bereitgestellt wird. Ihre Kartendaten und Lieferadressen werden an einem gesch&uuml;tzten Ort aufbewahrt. Nachdem Sie sich registriert haben, k&ouml;nnen Sie mit wenigen Klicks sicher online einkaufen."
+"Deschcdddsec","Sicher zahlen mit Lastschrift"
+"Deschcdivsec","Sicher bezahlen per Rechnungskauf"
 
 "Return in Errorcase","R&uuml;ckleitung bei Bezahlfehler"
 "Please configurate where your costumer should be redirected to in case of an payment error","Hier k&ouml;nnen Sie einstellen, wo der Kunde in Fehlerfall hingeleitet werden soll."
@@ -108,12 +105,13 @@
 
 "Heidelpay Credit Card (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Kreditkarte"
 "Heidelpay Direct Debit (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Lastschrift"
+"Heidelpay direct debit secured(hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition gesicherte SEPA Lastschrift (b2c)"
 "Heidelpay Debit Card (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Debitkarte"
 "Heidelpay SOFORT &Uuml;berweisung (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition SOFORT &Uuml;berweisung"
 "Heidelpay Giropay (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Giropay"
-"Heidelpay MangirKart (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition MangirKart"
 "Heidelpay Postfinance (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Postfinance"
 "Heidelpay Invoice (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Rechnung"
+"Heidelpay invoice secured(hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition gesicherte Rechnung (b2c)"
 "Heidelpay Pay Pal (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition PayPal"
 "Heidelpay Prepayment (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Vorkasse"
 "Heidelpay Billsafe (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition BillSafe"
@@ -154,10 +152,8 @@
 "Account no. & Bank no.","Kontonummer & Bankleitzahl"
 "IBAN & BIC","IBAN & BIC"
 
-"Insurence provider","Versicherer"
-"direct debit with insurence requires an extra contract. For more information, please contact your key account manager.","F&uuml;r Lastschrift mit Versicherung ben&ouml;tigen Sie einen extra Vertrag. Bitte kontakieren Sie Ihren Key Account Ansprechpartner."
-"Salutation","Anrede"
-"ms","Frau"
+"salutation","Anrede"
+"mrs","Frau"
 "mr","Herr"
 "Date of birth","Geburtsdatum"
 
@@ -187,5 +183,6 @@
 "HPError-800.100.171","Bitte w&auml;hlen Sie eine andere Zahlart"
 "HPError-800.300.101","Bitte w&auml;hlen Sie eine andere Zahlart"
 
-
-
+"The booking contains:","Die Abbuchung enthält:"
+"mandate reference ID","Mandatsreferenz-ID"
+"creditor identifier","Gläubiger ID"

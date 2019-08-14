@@ -4,11 +4,12 @@
 "Card number","Card Number"
 "Card holder","Card Holder"
 "Card expiry","Expiry Date"
+"day","day"
 "month","month"
 "year","year"
 "Verification number","Verification Number" 
 "pay now","Pay now"
-"payment informations","payment informations -"
+"payment information","payment information"
 "Automatically invoiced by Heidelpay.","Automatically invoiced by Heidelpay."
 "Automatically invoiced","Automatically invoiced"
 "Bookingmode","Bookingmode"
@@ -24,21 +25,19 @@
 "only if shippping adress is unchanged","only if shippping adress is unchanged"
 "Prepayment Info Text","Please transfer the amount of <strong>{AMOUNT} {CURRENCY}</strong> to the following account<br /><br />
 		Holder: {CONNECTOR_ACCOUNT_HOLDER}<br/>
-		IBAN: {CONNECTOR_ACCOUNT_IBAN}<br/>
-		BIC: {CONNECTOR_ACCOUNT_BIC}<br/><br/>
+		IBAN: {CONNECTOR_ACCOUNT_IBAN}<br/><br/>
 		<i>Please use only this identification number as the descriptor :</i><br/>
 		<strong>{IDENTIFICATION_SHORTID}</strong>"
 "Direct Debit Info Text","The amount of <strong>{AMOUNT} {CURRENCY}</strong> will be debited from this account within the next days:<br /><br />
-		IBAN: {Iban}<br />
-		BIC: {Bic}<br /><br />
+		IBAN: {Iban}<br /><br/>
 		<i>The booking contains the mandate reference ID: {Ident}<br >
 		and the creditor identifier: {CreditorId}</i><br />
 		<br />
 		Please ensure that there will be sufficient funds on the corresponding account."	
 "An unexpected error occurred. Please contact us to get further information.","An unexpected error occurred. Please contact us to get further information."
-"Invoice Info Text","Please transfer the amount of <strong>{AMOUNT} {CURRENCY}</strong> to the following account<br /><br />
+"Invoice Info Text","Please transfer the amount of <strong>{AMOUNT} {CURRENCY}</strong>after receiving your order to the following account<br /><br />
 		Holder: {CONNECTOR_ACCOUNT_HOLDER}<br/>
-		IBAN: {CONNECTOR_ACCOUNT_IBAN}<br/>
+		IBAN: {CONNECTOR_ACCOUNT_IBAN}<br/><br/>
 		BIC: {CONNECTOR_ACCOUNT_BIC}<br/><br/>
 		<i>Please use only this identification number as the descriptor :</i><br/>
 		<strong>{IDENTIFICATION_SHORTID}</strong>"
@@ -70,21 +69,21 @@
 "DISCOVER","Discover"		
 "DINERS","Diners Club"
 
-"Deschcdcc","Pay safe and secure with Creditcard<br>"
-"Deschcddc","Pay safe and secure with Debitcard<br>"
-"Deschcddd","Pay safe and secure with Direct Debit"
+"Deschcdcc","Pay safe and secure with credit card<br>"
+"Deschcddc","Pay safe and secure with debit card<br>"
+"Deschcddd","Pay safe and secure with direct debit"
 "Deschcdeps","Pay safe and secure with EPS"
 "Deschcdgp","Pay safe and secure with Giropay"
 "Deschcdide","Pay safe and secure with iDeal"
 "Deschcdpal","Pay safe and secure with PayPal"
 "Deschcdpp","Pay safe and secure with Prepayment"
 "Deschcdpf","Pay safe and secure with Postfinace"
-"Deschcdsu","Pay safe and secure with Sofort&Uuml;berweisung"
-"Deschcdiv","Pay comfortable with Invoice"
-"Deschcdmk","Pay comfortable with MangirKart"
+"Deschcdsu","Pay safe and secure with Sofort"
+"Deschcdiv","Pay comfortable with invoice"
 "Deschcdbs","Buy with invoice and check your order calmly before payment.<br/>"
-"Deschcdyt","Pay comfortable with Yapital"
 "Deschcdmpa","The MasterPass by MasterCard&copy; digital wallet makes online shopping safe and easy by storing all your payment and shipping information in one convenient and secure place. And it&apos;s free. With MasterPass, you simply shop, and check out faster."
+"Deschcdddsec","Pay safe and secure with direct debit"
+"Deschcdivsec","Pay comfortable with invoice"
 
 "Return in Errorcase","Return in Errorcase"
 "Please configurate where your costumer should be redirected to in case of an payment error","Please configurate where your costumer should be redirected to in case of an payment error"
@@ -107,12 +106,13 @@
 
 "Heidelpay Credit Card (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Credit Card"
 "Heidelpay Direct Debit (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Direct Debit"
+"Heidelpay direct debit secured(hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition SEPA direct debit secured (b2c)"
 "Heidelpay Debit Card (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Debit Card"
 "Heidelpay SOFORT &Uuml;berweisung (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition SOFORT &Uuml;berweisung"
 "Heidelpay Giropay (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Giropay"
-"Heidelpay MangirKart (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition MangirKart"
 "Heidelpay Postfinance (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Postfinance"
 "Heidelpay Invoice (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Invoice"
+"Heidelpay invoice secured(hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition invoice secured (b2c)"
 "Heidelpay Pay Pal (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition PayPal"
 "Heidelpay Prepayment (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition Prepayment"
 "Heidelpay Billsafe (hcd)","<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAAXNSR0IArs4c6QAAADBQTFRFODg43d3dt7e3KCgoREREU1NTAQEBEhIS////scfeeXl57OzsqKioXV1dk5OTnZ2dfmcBJgAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sJDgsIBJoD8v4AAABKSURBVAjXY5gJBQwzOsCgE53RCmM0AxknQIwGIMOiOyxBA8TgcFson9YCZIRzdHT0JQAZZSA1y4CMIhCjDaQGxOjtxGkFkAFzBgC9LkKOoh4LJgAAAABJRU5ErkJggg==' style='margin-right: 5px'/> Heidelpay CD-Edition BillSafe"
@@ -151,10 +151,8 @@
         und NICHTS ANDERES an."
 "HP_LEGALNOTE_BILLSAFE","Bitte überweisen Sie den ausstehenden Betrag {DAYS} Tage nach dem Sie über den Versand informiert wurden."
 
-"Insurence provider","Insurence provider"
-"direct debit with insurence requires an extra contract. For more information, please contact your key account manager.","direct debit with insurence requires an extra contract. For more information, please contact your key account manager."
-"Salutation","Salutation"
-"ms","Ms"
+"salutation","Salutation"
+"mrs","Mrs"
 "mr","Mr"
 "Date of birth","Date of birth"
 
@@ -191,3 +189,7 @@
 "HPError-800.100.168","Please choose another payment method"
 "HPError-800.100.171","Please choose another payment method"
 "HPError-800.300.101","Please choose another payment method"
+
+"The booking contains:","The booking contains:"
+"mandate reference ID","mandate reference ID"
+"creditor identifier","creditor identifier"
