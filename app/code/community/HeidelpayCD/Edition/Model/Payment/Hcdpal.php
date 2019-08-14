@@ -17,7 +17,7 @@ class HeidelpayCD_Edition_Model_Payment_Hcdpal extends HeidelpayCD_Edition_Model
 		$user = array();
 		
 		$user = parent::getUser($order, $isReg);
-		$adress	= (empty($order->getShippingAddress())) ? $order->getBillingAddress()  : $order->getShippingAddress() ;
+		$adress	= ($order->getShippingAddress() == false) ? $order->getBillingAddress()  : $order->getShippingAddress() ;
 		$email = ($adress->getEmail()) ? $adress->getEmail() : $order->getCustomerEmail();
 		
 		
