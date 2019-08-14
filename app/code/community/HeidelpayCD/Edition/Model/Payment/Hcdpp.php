@@ -2,18 +2,6 @@
 class HeidelpayCD_Edition_Model_Payment_Hcdpp extends HeidelpayCD_Edition_Model_Payment_Abstract
 {  
 	protected $_code = 'hcdpp';
-	protected $_isGateway = true;
-	protected $_canAuthorize = false;
-	protected $_canCapture = false;
-	protected $_canCapturePartial = false;
-	protected $_canRefund = true;
-	protected $_canRefundInvoicePartial = true;
-	protected $_canVoid = false;
-	protected $_canUseInternal = true;
-	protected $_canUseCheckout = true;
-	protected $_canUseForMultishipping = false;
-	protected $_isInitializeNeeded = true;
-	protected $_debug = true;
 	
 	
 	public function showPaymentInfo($payment_data) {

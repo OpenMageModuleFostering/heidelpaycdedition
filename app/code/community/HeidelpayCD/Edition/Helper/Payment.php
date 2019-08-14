@@ -6,9 +6,9 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 	protected $_invoiceOrderEmail = true ;
 	
 	protected function _getHelper()
-	{
+		{
 		return Mage::helper('hcd');
-	}
+		}
 	
 	public function splitPaymentCode($PAYMENT_CODE) {
 		return preg_split('/\./' , $PAYMENT_CODE);
@@ -178,9 +178,9 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 		$invoiceMailComment = '';
 		
 		if (strtoupper($data['CRITERION_LANGUAGE']) == 'DE') {
-				$locale = 'de_DE';
-				Mage::app()->getLocale()->setLocaleCode($locale);
-				Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
+			$locale = 'de_DE';
+			Mage::app()->getLocale()->setLocaleCode($locale);
+			Mage::getSingleton('core/translate')->setLocale($locale)->init('frontend', true);
 		};
 		
 		
@@ -199,13 +199,13 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 			
 		}	elseif (	( $PaymentCode[1] == 'CP' or	$PaymentCode[1] == 'DB' or $PaymentCode[1] == 'FI' or $PaymentCode[1] == 'RC')
 			and	( $data['PROCESSING_RESULT'] == 'ACK' and $data['PROCESSING_STATUS_CODE'] != 80 )) {
-				
+			
 			/**
 			 * Do nothing if status is allready successfull
 			 */
 			if ($order->getStatus() == $order->getPayment()->getMethodInstance()->getStatusSuccess() ) return ;
-				
-				
+			
+			
 			$message = (isset($data['ACCOUNT_BRAND']) and $data['ACCOUNT_BRAND'] == 'BILLSAFE') ? 'BillSafe Id: '.$data['CRITERION_BILLSAFE_REFERENCE'] : 'Heidelpay ShortID: '.$data['IDENTIFICATION_SHORTID'];
 			
 			if ($PaymentCode[0] == "IV" or $PaymentCode[0] == "PP") $message = Mage::helper('hcd')->__('recived amount ').$data['PRESENTATION_AMOUNT'].' '.$data['PRESENTATION_CURRENCY'].' '.$message; 
@@ -215,31 +215,31 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 			$order->getPayment()->setIsTransactionClosed(true);
 			
 			if ( $this->format($order->getGrandTotal()) == $data['PRESENTATION_AMOUNT'] and $order->getOrderCurrencyCode() == $data['PRESENTATION_CURRENCY']) {
-			 	$order->setState( $order->getPayment()->getMethodInstance()->getStatusSuccess(false),
-								  $order->getPayment()->getMethodInstance()->getStatusSuccess(true),
-										$message );
+				$order->setState( $order->getPayment()->getMethodInstance()->getStatusSuccess(false),
+					$order->getPayment()->getMethodInstance()->getStatusSuccess(true),
+					$message );
 				$totalypaid = true ;
-			 	
-			 } else {
-			 	/*
+				
+			} else {
+				/*
 				 * in case rc is ack and amount is to low or curreny missmatch
 				 */
-			 	$order->setState( $order->getPayment()->getMethodInstance()->getStatusPartlyPaid(false),
-								  $order->getPayment()->getMethodInstance()->getStatusPartlyPaid(true),
-										$message );
-			 }
-			 
-			 $path = "payment/".$order->getPayment()->getMethodInstance()->getCode()."/";
-			 
-			 $this->log($path.' Auto invoiced :'.Mage::getStoreConfig($path."invioce", $data['CRITERION_STOREID']).$data['CRITERION_STOREID']);
+				$order->setState( $order->getPayment()->getMethodInstance()->getStatusPartlyPaid(false),
+					$order->getPayment()->getMethodInstance()->getStatusPartlyPaid(true),
+					$message );
+			}
+			
+			$path = "payment/".$order->getPayment()->getMethodInstance()->getCode()."/";
+			
+			$this->log($path.' Auto invoiced :'.Mage::getStoreConfig($path."invioce", $data['CRITERION_STOREID']).$data['CRITERION_STOREID']);
 			
 			if ($order->canInvoice() and Mage::getStoreConfig($path."invioce", $data['CRITERION_STOREID']) == 1 and $totalypaid === true ) {
 				$this->log('Can Invoice ? '.($order->canInvoice()) ? 'YES': 'NO');
 				$invoice = $order->prepareInvoice();
+				$invoice->register()->capture();
 				$invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
 				$invoice->setState(Mage_Sales_Model_Order_Invoice::STATE_PAID);
-                $invoice->setIsPaid(true);
-				$invoice->register();
+				$invoice->setIsPaid(true);
 				$order->setIsInProcess(true);
 				$order->addStatusHistoryComment(
 					Mage::helper('hcd')->__('Automatically invoiced by Heidelpay.'),
@@ -259,24 +259,27 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 				Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
 				null,
 				true,
-			$message
-			);	
-			$order->setIsInProcess(true);
-		}else {
-			$message = (isset($data['ACCOUNT_BRAND']) and $data['ACCOUNT_BRAND'] == 'BILLSAFE') ? 'BillSafe Id: '.$data['CRITERION_BILLSAFE_REFERENCE'] : 'Heidelpay ShortID: '.$data['IDENTIFICATION_SHORTID'];
-			$order->getPayment()->setTransactionId($data['IDENTIFICATION_UNIQUEID']);
-			$order->getPayment()->setIsTransactionClosed(0);
-			$order->getPayment()->setTransactionAdditionalInfo(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, null);
-			$this->log('Set Transaction to Pending : '.$order->getPayment()->getMethodInstance()->getStatusPendig());
-			$order->setState( $order->getPayment()->getMethodInstance()->getStatusPendig(false),
-				$order->getPayment()->getMethodInstance()->getStatusPendig(true),
-				$message );
-			$order->getPayment()->addTransaction(
-				Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
-				null,
-				true,
 				$message
 			);	
+			
+			$order->setIsInProcess(true);
+		}else {
+			if ($order->getStatus() != $order->getPayment()->getMethodInstance()->getStatusSuccess() and $order->getStatus() != $order->getPayment()->getMethodInstance()->getStatusError()) {
+				$message = (isset($data['ACCOUNT_BRAND']) and $data['ACCOUNT_BRAND'] == 'BILLSAFE') ? 'BillSafe Id: '.$data['CRITERION_BILLSAFE_REFERENCE'] : 'Heidelpay ShortID: '.$data['IDENTIFICATION_SHORTID'];
+				$order->getPayment()->setTransactionId($data['IDENTIFICATION_UNIQUEID']);
+				$order->getPayment()->setIsTransactionClosed(0);
+				$order->getPayment()->setTransactionAdditionalInfo(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, null);
+				$this->log('Set Transaction to Pending : '.$order->getPayment()->getMethodInstance()->getStatusPendig());
+				$order->setState( $order->getPayment()->getMethodInstance()->getStatusPendig(false),
+					$order->getPayment()->getMethodInstance()->getStatusPendig(true),
+					$message );
+				$order->getPayment()->addTransaction(
+					Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
+					null,
+					true,
+					$message
+				);	
+			}
 		}
 		$order->save();
 		
@@ -311,7 +314,7 @@ class HeidelpayCD_Edition_Helper_Payment extends Mage_Core_Helper_Abstract
 		
 		if ($errorCode) {
 			if (!preg_match('/HPError-[0-9]{3}\.[0-9]{3}\.[0-9]{3}/', $this->_getHelper()->__('HPError-'.$errorCode), $matches)) //JUST return when snipet exists
-								return $this->_getHelper()->__('HPError-'.$errorCode);
+				return $this->_getHelper()->__('HPError-'.$errorCode);
 		}
 		
 		return $this->_getHelper()->__('An unexpected error occurred. Please contact us to get further information.');

@@ -7,17 +7,6 @@ class HeidelpayCD_Edition_Model_Payment_Hcdpal extends HeidelpayCD_Edition_Model
 	* @var string [a-z0-9_]   
 	**/
 	protected $_code = 'hcdpal';
-	protected $_isGateway = true;
-	protected $_canAuthorize = true;
-	protected $_canCapture = true;
-	protected $_canCapturePartial = true;
-	protected $_canRefund = false;
-	protected $_canRefundInvoicePartial = false;
-	protected $_canVoid = false;
-	protected $_canUseInternal = false;
-	protected $_canUseCheckout = true;
-	protected $_canUseForMultishipping = false;
-	protected $_isInitializeNeeded = false;
 	
 	
 	/*
@@ -28,18 +17,18 @@ class HeidelpayCD_Edition_Model_Payment_Hcdpal extends HeidelpayCD_Edition_Model
 		$user = array();
 		
 		$user = parent::getUser($order, $isReg);
-		$shipping	= $order->getShippingAddress();
-		$email = ($order->getShippingAddress()->getEmail()) ? $order->getShippingAddress()->getEmail() : $order->getCustomerEmail();
+		$adress	= (empty($order->getShippingAddress())) ? $order->getBillingAddress()  : $order->getShippingAddress() ;
+		$email = ($adress->getEmail()) ? $adress->getEmail() : $order->getCustomerEmail();
 		
 		
-		$user['IDENTIFICATION.SHOPPERID'] 	= $shipping->getCustomerId();
-		if ($shipping->getCompany() == true) $user['NAME.COMPANY']	= trim($shipping->getCompany());
-		$user['NAME.GIVEN']			= trim($shipping->getFirstname());
-		$user['NAME.FAMILY']		= trim($shipping->getLastname());
-		$user['ADDRESS.STREET']		= $shipping->getStreet1()." ".$shipping->getStreet2();
-		$user['ADDRESS.ZIP']		= $shipping->getPostcode();
-		$user['ADDRESS.CITY']		= $shipping->getCity();
-		$user['ADDRESS.COUNTRY']	= $shipping->getCountry();
+		$user['IDENTIFICATION.SHOPPERID'] 	= $adress->getCustomerId();
+		if ($adress->getCompany() == true) $user['NAME.COMPANY']	= trim($adress->getCompany());
+		$user['NAME.GIVEN']			= trim($adress->getFirstname());
+		$user['NAME.FAMILY']		= trim($adress->getLastname());
+		$user['ADDRESS.STREET']		= $adress->getStreet1()." ".$adress->getStreet2();
+		$user['ADDRESS.ZIP']		= $adress->getPostcode();
+		$user['ADDRESS.CITY']		= $adress->getCity();
+		$user['ADDRESS.COUNTRY']	= $adress->getCountry();
 		$user['CONTACT.EMAIL']		= $email;
 		
 		return $user;	

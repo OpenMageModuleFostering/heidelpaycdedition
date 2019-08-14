@@ -428,16 +428,21 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 			$Autorisation = Mage::getModel('hcd/transaction')->getOneTransactionByMethode($order->getRealOrderId() , 'PA');
 			
 			$config = $this->getMainConfig($this->_code, $Autorisation['CRITERION_STOREID']);
-			$config['PAYMENT.TYPE'] = ($this->_code == 'hcdbs') ? 'FI' : 'CP'; // If billsafe set to fin
 			
-			/*
-			if($this->_code == 'hcdbs') {
+			
+			// finalize function for invoice and billsafe transactions 
+			$config['PAYMENT.TYPE'] = ($this->_code == 'hcdbs' or $this->_code == 'hcdiv') ? 'FI' : 'CP'; // If billsafe or invoice set to fin
+			
+			/*		
+			if($this->_code == 'hcdbs' or $this->_code == 'hcdiv') {
 				foreach ($Autorisation AS $k => $v){
+				  if (strpos( $k , 'CRITERION')) $basketData[$k] = $v ;
 					
 				}
 				
 			}
 			*/
+			
 			$frontend = $this->getFrontend($order->getRealOrderId(), $Autorisation['CRITERION_STOREID']);
 			$frontend['FRONTEND.MODE'] 		= 'DEFAULT';
 			$frontend['FRONTEND.ENABLED'] 	= 'false';
@@ -450,6 +455,8 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 			
 			$params = Mage::helper('hcd/payment')->preparePostData( $config, $frontend,	$user, $basketData,
 				$criterion=array());
+				
+			
 			
 			$this->log("doRequest url : ".$config['URL']);
 			$this->log("doRequest params : ".print_r($params,1));
@@ -457,7 +464,8 @@ class HeidelpayCD_Edition_Model_Payment_Abstract extends Mage_Payment_Model_Meth
 			$src = Mage::helper('hcd/payment')->doRequest($config['URL'], $params);
 			
 			$this->log("doRequest response : ".print_r($src,1));
-			#Mage::throwException('Heidelpay Error: '.'<pre>'.print_r($src,1).'</pre>');
+			//Mage::throwException('Heidelpay Error: '.'<pre>'.print_r($src,1).'</pre>');
+			
 			
 			if($src['PROCESSING_RESULT'] == "NOK") {
 				Mage::throwException('Heidelpay Error: '.$src['PROCESSING_RETURN']);

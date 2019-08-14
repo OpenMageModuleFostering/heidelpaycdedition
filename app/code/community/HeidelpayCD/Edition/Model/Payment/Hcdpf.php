@@ -2,17 +2,8 @@
 class HeidelpayCD_Edition_Model_Payment_Hcdpf extends HeidelpayCD_Edition_Model_Payment_Abstract
 {
 	protected $_code = 'hcdpf';
-	protected $_isGateway = true;
-	protected $_canAuthorize = false;
-	protected $_canCapture = false;
-	protected $_canCapturePartial = false;
 	protected $_canRefund = false;
 	protected $_canRefundInvoicePartial = false;
-	protected $_canVoid = false;
-	protected $_canUseInternal = false;
-	protected $_canUseCheckout = true;
-	protected $_canUseForMultishipping = false;
-	protected $_isInitializeNeeded = false;
 	protected $_formBlockType = 'hcd/form_postfinance';
 	
 	public function getFormBlockType(){

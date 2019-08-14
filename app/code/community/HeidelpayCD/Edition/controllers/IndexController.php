@@ -115,6 +115,10 @@ class HeidelpayCD_Edition_IndexController extends Mage_Core_Controller_Front_Act
 			return $this;
 		}
 		
+		//$this->log('No Mail '.Mage::app()->getRequest()->getParam('no_mail'));
+		$no_mail = (Mage::app()->getRequest()->getParam('no_mail') == 1) ? true : false;
+		
+		
 		$this->getCheckout()->getQuote()->setIsActive(false)->save();
 		$this->getCheckout()->clear();
 		
@@ -138,14 +142,16 @@ class HeidelpayCD_Edition_IndexController extends Mage_Core_Controller_Front_Act
 		$this->getCheckout()->setLastSuccessQuoteId($quoteID);
 		$this->log('LastQuteID :'. $quoteID );
 		
-		Mage::helper('hcd/payment')->mapStatus (
-			$data,
-			$order
-		); 
+		if ($no_mail === false) {
+			Mage::helper('hcd/payment')->mapStatus (
+				$data,
+				$order
+			); 
+		}
 		
-		if($order->getId()) { 
+		if($order->getId() and $no_mail === false) { 
 			$order->sendNewOrderEmail();
-			$this->log('sendOrderMail');
+			//$this->log('sendOrderMail');
 		}
 		$order->save();
 		$this->_redirect('checkout/onepage/success', array('_secure' => true));
@@ -238,6 +244,21 @@ class HeidelpayCD_Edition_IndexController extends Mage_Core_Controller_Front_Act
 			return $this;					
 		}
 		$payment = $order->getPayment()->getMethodInstance();
+		
+		// if order status is cancel redirect to cancel page 
+		if ($order->getStatus() == $payment->getStatusError()) {
+				$this->_redirect('hcd/index/error', array('_forced_secure' => true, '_store_to_url' => true, '_nosid' => true));
+				return;
+		};
+		
+		// if order status is success redirect to success page 
+		if ($order->getStatus() == $payment->getStatusSuccess() or $order->getStatus() == $payment->getStatusPendig()) {
+			$this->_redirect('hcd/index/success', array('_forced_secure' => true, '_store_to_url' => true, '_nosid' => true,'no_mail' => true));
+			return;
+		}
+   
+			
+		
 		$data = $payment->getHeidelpayUrl();
 		
 		if($data['POST_VALIDATION'] == 'ACK' and $data['PROCESSING_RESULT'] == 'ACK' ) 
@@ -498,16 +519,7 @@ class HeidelpayCD_Edition_IndexController extends Mage_Core_Controller_Front_Act
 		foreach($data AS $k) echo "<pre>".print_r($k,1)."</pre>";
 	}  
 	
-	public function postAction() {
-		$Request = Mage::app()->getRequest();
-		$Request->setParamSources(array('_POST'));
-		$data = array();
-		$data= $Request->getParams();
-		
-		$this->log('Postdata :'.print_r($data,1)); 
-		
-	}
-	*/	
+	*/
 	
 	
 }
