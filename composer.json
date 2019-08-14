@@ -1,7 +1,7 @@
 {
     "name": "OpenMageModuleFostering/HeidelpayCDEdition",
     "type": "magento-module",
-    "license": "See-License.txt",
+    "license": "heidelpay-license",
     "homepage": "",
     "description": "Heidelpay CD-Edition Payment Plugin",
     "authors": [
